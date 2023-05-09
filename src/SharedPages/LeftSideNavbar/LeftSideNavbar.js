@@ -12,7 +12,7 @@ const LeftSideNavbar = () => {
 
     return (
         <div>
-            <h3>Category quantity: {categories.length}</h3>
+            <h3>All category: {categories.length}</h3>
             <div>
                 {
                     categories.map(category => 
