@@ -1,9 +1,17 @@
 import React from 'react';
+import { useLoaderData } from 'react-router-dom';
+import NewsCard from '../../SharedPages/NewsCard/NewsCard';
 
 const Home = () => {
+    const allNews = useLoaderData();
     return (
         <div>
-            <h3>This is home.</h3>
+            {
+                allNews.map(news => <NewsCard
+                key={news._id}
+                news={news}
+                ></NewsCard>)
+            }
         </div>
     );
 };

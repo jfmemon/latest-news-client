@@ -4,17 +4,18 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import LeftSideNavbar from '../LeftSideNavbar/LeftSideNavbar';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className='mb-4'>
             <Container>
-                <Navbar.Brand href="#home">Latest News</Navbar.Brand>
+                <Navbar.Brand><Link to='/'>Latest News</Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="#features">All News</Nav.Link>
-                        <Nav.Link href="#pricing">Breaking News</Nav.Link>
+                        <Nav.Link>All News</Nav.Link>
+                        <Nav.Link>Breaking News</Nav.Link>
                         <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.2">
