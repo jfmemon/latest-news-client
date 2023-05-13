@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { AuthContext } from '../../../Contexts/AuthProvider/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-    const {login} = useContext(AuthContext);
+    const [error, setError] = useState('');
+    const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
 
@@ -17,13 +18,17 @@ const Login = () => {
         console.log(email, password);
 
         login(email, password)
-        .then(result => {
-            const user = result.user;
-            console.log(user);
-            form.reset();
-            navigate('/');
-        })
-        .catch(error => console.error(error))
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                setError('');
+                form.reset();
+                navigate('/');
+            })
+            .catch(error => {
+                console.error(error);
+                setError(error.message);
+            })
     }
 
     return (
@@ -31,21 +36,24 @@ const Login = () => {
             <h3>Login</h3>
             <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" name="email" placeholder="Enter email" />
+                <Form.Control type="email" name="email" placeholder="Enter email" required />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-1" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" name="password" placeholder="Password" />
+                <Form.Control type="password" name="password" placeholder="Password" aria-required />
             </Form.Group>
+            <div className='mb-2'>
+                <Form.Text className="text-danger">
+                    {error}
+                </Form.Text>
+            </div>
 
             <Button variant="primary" type="submit">
                 Login
             </Button>
 
-            <Form.Text className="text-danger">
-                {/* We'll never share your email with anyone else. */}
-            </Form.Text>
+
         </Form>
     );
 };

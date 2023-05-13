@@ -1,11 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { AuthContext } from '../../../Contexts/AuthProvider/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+    const navigate = useNavigate();
+    const [error, setError] = useState('');
 
-    const {register} = useContext(AuthContext);
+    const { register } = useContext(AuthContext);
 
     const handleRegistrationSubmit = event => {
         event.preventDefault();
@@ -17,12 +20,17 @@ const Register = () => {
         console.log(name, email, photoURL, password);
 
         register(email, password)
-        .then(result => {
-            const user = result.user;
-            console.log(user);
-            form.reset();
-        })
-        .catch(error => console.error(error))
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                setError('');
+                form.reset();
+                navigate('/');
+            })
+            .catch(error => {
+                console.error(error);
+                setError(error.message);
+            })
     }
 
     return (
@@ -40,13 +48,19 @@ const Register = () => {
                 <Form.Label>Photo URL</Form.Label>
                 <Form.Control type="text" name="photoURL" placeholder="Photo URL" />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-1" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" name="password" placeholder="Password" />
+                <Form.Control type="password" name="password" placeholder="Password" required />
             </Form.Group>
+            <div className='mb-2'>
+                <Form.Text className="text-danger">
+                    {error}
+                </Form.Text>
+            </div>
             <Button variant="primary" type="submit">
                 Register
             </Button>
+
         </Form>
     );
 };
