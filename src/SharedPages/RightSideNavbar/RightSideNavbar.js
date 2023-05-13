@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { FaGoogle, FaGithub, FaFacebook, FaYoutube, FaTwitter, FaWhatsapp, FaDiscord } from 'react-icons/fa';
@@ -6,11 +6,28 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Carousel from 'react-bootstrap/Carousel';
 import brand1 from '../../Assets/images/brand1.png';
 import brand2 from '../../Assets/images/brand2.jpg';
+import { AuthContext } from '../../Contexts/AuthProvider/AuthProvider';
+import { GoogleAuthProvider } from "firebase/auth";
 const RightSideNavbar = () => {
+    const { loginWithGoogle } = useContext(AuthContext);
+
+    const googleProvider = new GoogleAuthProvider();
+
+    const handleGoogleLogin = () => {
+        loginWithGoogle(googleProvider)
+        .then((result) => {
+            const user = result.user;
+            console.log(user);
+        })
+        .catch((error) => {
+            console.error('This is an error: ', error);
+        })
+    }
+
     return (
         <div>
             <ButtonGroup vertical>
-                <Button className='px-5' variant="outline-primary"><FaGoogle /> Login with google</Button>
+                <Button onClick={handleGoogleLogin} className='px-5' variant="outline-primary"><FaGoogle /> Login with google</Button>
                 <Button className='mt-2 px-5' variant="outline-dark"><FaGithub /> Login with github</Button>
             </ButtonGroup>
             <div className='mt-4'>
