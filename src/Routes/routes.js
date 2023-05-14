@@ -4,28 +4,30 @@ import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login/Login";
 import Register from "../Pages/Login/Register/Register";
 import News from "../Pages/News/News/News";
+import TermsAndCondition from "../SharedPages/TermsAndCondition/TermsAndCondition";
+import PrivateRoutes from "./PrivateRoutes/PrivateRoutes";
 
 const { createBrowserRouter } = require("react-router-dom");
 
 export const router = createBrowserRouter([
     {
-        path:'/',
+        path: '/',
         element: <Main></Main>,
         children: [
             {
-                path:'/',
+                path: '/',
                 element: <Home></Home>,
                 loader: () => fetch(`http://localhost:5000/news`)
             },
             {
                 path: '/category/:id',
                 element: <Category></Category>,
-                loader: ({params}) => fetch(`http://localhost:5000/category/${params.id}`)
+                loader: ({ params }) => fetch(`http://localhost:5000/category/${params.id}`)
             },
             {
                 path: '/news/:id',
-                element: <News></News>,
-                loader: ({params}) => fetch(`http://localhost:5000/news/${params.id}`)
+                element: <PrivateRoutes><News></News></PrivateRoutes>,
+                loader: ({ params }) => fetch(`http://localhost:5000/news/${params.id}`)
             },
             {
                 path: '/login',
@@ -34,6 +36,10 @@ export const router = createBrowserRouter([
             {
                 path: '/register',
                 element: <Register></Register>
+            },
+            {
+                path: '/terms',
+                element: <TermsAndCondition></TermsAndCondition>
             }
         ]
     }

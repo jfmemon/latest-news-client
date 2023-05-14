@@ -2,13 +2,15 @@ import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { AuthContext } from '../../../Contexts/AuthProvider/AuthProvider';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 const Register = () => {
     const navigate = useNavigate();
     const [error, setError] = useState('');
+    const [terms, setTerms] = useState(false);
 
-    const { register } = useContext(AuthContext);
+    const { register, updateUserProfile, emailVerify } = useContext(AuthContext);
 
     const handleRegistrationSubmit = event => {
         event.preventDefault();
@@ -17,7 +19,6 @@ const Register = () => {
         const email = form.email.value;
         const photoURL = form.photoURL.value;
         const password = form.password.value;
-        console.log(name, email, photoURL, password);
 
         register(email, password)
             .then(result => {
@@ -26,11 +27,33 @@ const Register = () => {
                 setError('');
                 form.reset();
                 navigate('/');
+                handleUpdateUserInfo(name, photoURL);
+                handleVerification();
+                toast.success("Please verify your email address.");
             })
             .catch(error => {
                 console.error(error);
                 setError(error.message);
             })
+    }
+
+    const handleTerms = event => {
+        setTerms(event.target.checked);
+    }
+
+    const handleUpdateUserInfo = (name, photoURL) => {
+        const profile = {
+            displayName: name,
+            photoURL: photoURL
+        }
+        updateUserProfile(profile)
+        .then(() => {})
+        .catch(error => console.error(error))
+    }
+
+    const handleVerification = () => {
+        emailVerify()
+        .then(() => {});
     }
 
     return (
@@ -52,12 +75,18 @@ const Register = () => {
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" name="password" placeholder="Password" required />
             </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                <Form.Check 
+                type="checkbox" 
+                onClick={handleTerms}
+                label={<>Accept <Link to="/terms">Terms and condition</Link> </>} />
+            </Form.Group>
             <div className='mb-2'>
                 <Form.Text className="text-danger">
                     {error}
                 </Form.Text>
             </div>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" disabled={!terms}>
                 Register
             </Button>
 
