@@ -5,7 +5,7 @@ const LeftSideNavbar = () => {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/news-category')  // 1stly fetch korbo then...
+        fetch('https://latest-news-server.vercel.app/news-category')  // 1stly fetch korbo then...
         .then(response => response.json())  // je response pabo take json a convert korbo
         .then(data => setCategories(data))  // je data pabo take use korbo
     },[])
