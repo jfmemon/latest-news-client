@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast';
 
 const Login = () => {
     const [error, setError] = useState('');
-    const { login } = useContext(AuthContext);
+    const { login, setLoading } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -33,9 +33,14 @@ const Login = () => {
                     toast.error("Your email is not verified. Please verify your email address.")
                 }
             })
+
             .catch(error => {
                 console.error(error);
                 setError(error.message);
+            })
+            
+            .finally(() => {
+                setLoading(false)
             })
     }
 
